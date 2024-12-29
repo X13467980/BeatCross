@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1711801B2D21082F00B5E414 /* test.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1711801A2D21082300B5E414 /* test.txt */; };
+		F313189A2D210BC000C24734 /* test2.txt  in Resources */ = {isa = PBXBuildFile; fileRef = F31318992D210BB200C24734 /* test2.txt  */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +33,7 @@
 		17117FFD2D2104F100B5E414 /* BeatCrossTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		171180072D2104F100B5E414 /* BeatCrossUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1711801A2D21082300B5E414 /* test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
+		F31318992D210BB200C24734 /* test2.txt  */ = {isa = PBXFileReference; lastKnownFileType = text; path = "test2.txt "; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -80,6 +82,7 @@
 		17117FE42D2104F000B5E414 = {
 			isa = PBXGroup;
 			children = (
+				F31318992D210BB200C24734 /* test2.txt  */,
 				1711801A2D21082300B5E414 /* test.txt */,
 				17117FEF2D2104F000B5E414 /* BeatCross */,
 				171180002D2104F100B5E414 /* BeatCrossTests */,
@@ -218,6 +221,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F313189A2D210BC000C24734 /* test2.txt  in Resources */,
 				1711801B2D21082F00B5E414 /* test.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
