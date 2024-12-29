@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1711801B2D21082F00B5E414 /* test.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1711801A2D21082300B5E414 /* test.txt */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		17117FFE2D2104F100B5E414 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		17117FED2D2104F000B5E414 /* BeatCross.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatCross.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17117FFD2D2104F100B5E414 /* BeatCrossTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		171180072D2104F100B5E414 /* BeatCrossUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1711801A2D21082300B5E414 /* test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		17117FE42D2104F000B5E414 = {
 			isa = PBXGroup;
 			children = (
+				1711801A2D21082300B5E414 /* test.txt */,
 				17117FEF2D2104F000B5E414 /* BeatCross */,
 				171180002D2104F100B5E414 /* BeatCrossTests */,
 				1711800A2D2104F100B5E414 /* BeatCrossUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1711801B2D21082F00B5E414 /* test.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
