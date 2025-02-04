@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		165EF1640B906FAA05DA9B60 /* Pods_BeatCross_BeatCrossUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F959BD6D0576EC6FFED2A50 /* Pods_BeatCross_BeatCrossUITests.framework */; };
+		170962BE2D527AC50040CBBB /* test.txt in Resources */ = {isa = PBXBuildFile; fileRef = 170962BD2D527AB40040CBBB /* test.txt */; };
 		17949ABF2D526CC000FAD512 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 17949ABD2D526CBA00FAD512 /* .gitignore */; };
 		B878DC403421F342BC76E3A5 /* Pods_BeatCross.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1ADE9F0540680D102571748 /* Pods_BeatCross.framework */; };
 		C1B3EA5AB70699E6E06C788D /* Pods_BeatCrossTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C020581B59574F5ACA2BC5E /* Pods_BeatCrossTests.framework */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		170962BD2D527AB40040CBBB /* test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
 		17949A732D526AA100FAD512 /* BeatCross.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatCross.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17949A832D526AA200FAD512 /* BeatCrossTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		17949A8D2D526AA200FAD512 /* BeatCrossUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +97,7 @@
 		17949A6A2D526AA100FAD512 = {
 			isa = PBXGroup;
 			children = (
+				170962BD2D527AB40040CBBB /* test.txt */,
 				17949A752D526AA100FAD512 /* BeatCross */,
 				17949A862D526AA200FAD512 /* BeatCrossTests */,
 				17949A902D526AA200FAD512 /* BeatCrossUITests */,
@@ -258,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				17949ABF2D526CC000FAD512 /* .gitignore in Resources */,
+				170962BE2D527AC50040CBBB /* test.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
