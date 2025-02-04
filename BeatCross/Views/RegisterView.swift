@@ -6,14 +6,12 @@
 //
 
 import SwiftUI
-import FirebaseAuth
 
 struct RegisterView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var errorMessage: String? = nil
-    @State private var navigateToFavoriteSong: Bool = false
-    @State private var userId: String? = nil // Firebase Auth の UID を保持
+    @State private var navigateToHome: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -34,7 +32,6 @@ struct RegisterView: View {
                     Text(errorMessage)
                         .foregroundColor(.red)
                         .font(.caption)
-                        .multilineTextAlignment(.center)
                 }
                 
                 Button(action: {
@@ -50,10 +47,8 @@ struct RegisterView: View {
             }
             .padding()
             .navigationTitle("Register")
-            .navigationDestination(isPresented: $navigateToFavoriteSong) {
-                if let userId = userId {
-                    FavoriteSongView(userId: userId)
-                }
+            .navigationDestination(isPresented: $navigateToHome) {
+                HomeView()
             }
         }
     }
@@ -61,12 +56,11 @@ struct RegisterView: View {
     func registerUser() {
         AuthManager.shared.register(email: email, password: password) { result in
             switch result {
-            case .success(let userId):
-                self.errorMessage = nil
-                self.userId = userId
-                self.navigateToFavoriteSong = true // 登録後、お気に入り曲設定画面へ遷移
+            case .success:
+                errorMessage = nil
+                navigateToHome = true // 成功時にHomeViewへ遷移
             case .failure(let error):
-                self.errorMessage = error.localizedDescription
+                errorMessage = error.localizedDescription
             }
         }
     }
@@ -75,4 +69,3 @@ struct RegisterView: View {
 #Preview {
     RegisterView()
 }
-

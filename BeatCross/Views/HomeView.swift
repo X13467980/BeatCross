@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Song: Identifiable {
+struct Song: Identifiable, Decodable {
     let id = UUID()
     let image: String // 画像のURLまたはアセット名
     let title: String
