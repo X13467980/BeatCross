@@ -15,7 +15,6 @@ struct Song: Identifiable, Decodable {
 }
 
 struct HomeView: View {
-    // 受信した曲のデータ (サンプルデータとして作成)
     @State private var receivedSongs: [Song] = [
         Song(image: "album1", title: "Song Title 1", artist: "Artist 1"),
         Song(image: "album2", title: "Song Title 2", artist: "Artist 2"),
@@ -30,11 +29,9 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
-                // 曲のリストを表示
                 ScrollView {
                     ForEach(receivedSongs) { song in
                         HStack {
-                            // ジャケット画像
                             Image(song.image)
                                 .resizable()
                                 .scaledToFill()
@@ -42,11 +39,9 @@ struct HomeView: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
 
                             VStack(alignment: .leading) {
-                                // 曲名
                                 Text(song.title)
                                     .font(.headline)
 
-                                // アーティスト名
                                 Text(song.artist)
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
@@ -57,10 +52,49 @@ struct HomeView: View {
                         .padding(.vertical, 8)
                     }
                 }
+
+                Spacer()
+
+                // 🔍 小さい検索ボタンを画面右下に配置
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        openSpotifySearch()
+                    }) {
+                        Text("🔍")
+                            .font(.title)
+                            .frame(width: 50, height: 50)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .clipShape(Circle())
+                            .shadow(radius: 5)
+                    }
+                    .padding(.bottom, 30)
+                    .padding(.trailing, 20)
+                }
             }
             .padding()
-            .navigationBarBackButtonHidden(true) // 戻るボタンを非表示
             .navigationTitle("Home")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        openSpotifySearch()
+                    }) {
+                        Image(systemName: "magnifyingglass")
+                            .font(.title2)
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+        }
+    }
+
+    // SwiftUI から UIKit の `SpotifySearchViewController` を開く
+    private func openSpotifySearch() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            let searchVC = SpotifySearchViewController()
+            rootVC.present(searchVC, animated: true)
         }
     }
 }
