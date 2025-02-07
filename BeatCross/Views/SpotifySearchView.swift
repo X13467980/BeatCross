@@ -1,5 +1,5 @@
 //
-//  SpotifySaerchView.swift
+//  SpotifySearchView.swift
 //  BeatCross
 //
 //  Created by 尾崎陽介 on 2025/02/03.
@@ -24,7 +24,8 @@ class SpotifySearchView: UIView {
 
     let tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        // 今回は .subtitle スタイルのセルを使うため、ここでは register しない
+        // register するとデフォルトスタイルになるので注意
         return tableView
     }()
 
