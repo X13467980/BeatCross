@@ -38,7 +38,7 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
                 return
             }
 
-            self.spotifyManager.searchSpotify(query: query) { results in
+            self.spotifyManager.searchTrack(query: query) { results in
                 guard let results = results else {
                     self.showAlert(title: "⚠️ エラー", message: "楽曲が見つかりませんでした")
                     return
@@ -83,9 +83,9 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
         databaseControl.saveToFirestore(track: selectedTrack) { success in
             DispatchQueue.main.async {
                 if success {
-                    self.showAlert(title: "✅ お気に入り追加", message: "\(selectedTrack.name) をお気に入りに追加しました！")
+                    self.showAlert(title: "✅ お気に入り設定", message: "\(selectedTrack.name) をお気に入りに設定しました！")
                 } else {
-                    self.showAlert(title: "❌ エラー", message: "お気に入り追加に失敗しました。")
+                    self.showAlert(title: "❌ エラー", message: "お気に入り設定に失敗しました。")
                 }
             }
         }
