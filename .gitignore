@@ -3,3 +3,7 @@
 *.plist
 BeatCross/GoogleService-Info.plist
 BeatCross/Info.plist
+
+# Xcode user data
+*.xcuserdatad/
+*.xcuserdata/
