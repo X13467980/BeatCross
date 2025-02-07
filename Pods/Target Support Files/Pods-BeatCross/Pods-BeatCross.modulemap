@@ -1,0 +1,6 @@
+framework module Pods_BeatCross {
+  umbrella header "Pods-BeatCross-umbrella.h"
+
+  export *
+  module * { export * }
+}
