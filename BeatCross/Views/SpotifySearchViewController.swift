@@ -1,5 +1,5 @@
 //
-//  SpotifySaerchView.swift
+//  SpotifySearchViewController.swift
 //  BeatCross
 //
 //  Created by 尾崎陽介 on 2025/02/03.
@@ -13,31 +13,50 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
     private let databaseControl = DatabaseControl()
     private var searchResults: [SpotifyTrack] = []
 
+    // MARK: - Lifecycle
+
+    /// Viewの置き換え
     override func loadView() {
         self.view = searchView
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchView.searchButton.addTarget(self, action: #selector(handleSearchButton), for: .touchUpInside)
+        
+        // テーブルビューのデリゲート・データソース設定
         searchView.tableView.delegate = self
         searchView.tableView.dataSource = self
-        searchView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell") // ✅ ここを追加
+        
+        // "subtitle" スタイルのセルを使うため、ここでは register() は呼ばない
+        // searchView.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "trackCell")
+        
+        // 検索ボタンのアクション設定
+        searchView.searchButton.addTarget(
+            self,
+            action: #selector(handleSearchButton),
+            for: .touchUpInside
+        )
     }
+
+    // MARK: - Actions
 
     @objc private func handleSearchButton() {
         let query = searchView.searchTextField.text ?? ""
+        
+        // 入力が空ならエラーダイアログを表示
         guard !query.isEmpty else {
             showAlert(title: "⚠️ エラー", message: "検索キーワードを入力してください")
             return
         }
 
+        // Spotifyのトークン取得
         spotifyManager.fetchSpotifyAccessToken { [weak self] token in
             guard let self = self, let token = token else {
                 self?.showAlert(title: "⚠️ エラー", message: "Spotifyの認証に失敗しました")
                 return
             }
 
+            // トークンが取得できれば検索APIを実行
             self.spotifyManager.searchSpotify(query: query) { results in
                 guard let results = results else {
                     self.showAlert(title: "⚠️ エラー", message: "楽曲が見つかりませんでした")
@@ -46,56 +65,79 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
 
                 self.searchResults = results
                 DispatchQueue.main.async {
+                    // テーブルをリロードして結果を表示
                     self.searchView.tableView.reloadData()
                 }
             }
         }
     }
 
-    // ✅ 【修正】検索結果に「曲名 - アーティスト名」を正しく表示
+    // MARK: - UITableViewDataSource
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return searchResults.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    /// 曲名（メイン）とアーティスト名（サブ）を表示するために「.subtitle」スタイルを使用
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "trackCell"
-
-        // ✅ `subtitle` スタイルで `UITableViewCell` を作成（`detailTextLabel` を使うため）
+        
+        // 再利用セルが無ければ「.subtitle」スタイルで新規生成する
         var cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier)
         if cell == nil {
             cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
         }
-
+        
         let track = searchResults[indexPath.row]
-        let artistNames = track.artists.isEmpty ? "Unknown Artist" : track.artists.map { $0.name }.joined(separator: ", ")
+        let artistNames = track.artists.map { $0.name }.joined(separator: ", ")
 
+        // メインテキストに曲名
         cell?.textLabel?.text = track.name
-        cell?.detailTextLabel?.text = artistNames  // ✅ アーティスト名を表示
-
-        return cell ?? UITableViewCell()
+        // サブテキスト（detailTextLabel）にアーティスト名
+        cell?.detailTextLabel?.text = artistNames
+        
+        // 万が一 cell が nil のときに備えて安全にアンラップ
+        return cell ?? UITableViewCell(style: .subtitle, reuseIdentifier: cellIdentifier)
     }
 
-    // ✅ 【修正】曲を選択した時の処理
+    // MARK: - UITableViewDelegate
+
+    /// セルをタップしたらお気に入りに追加
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedTrack = searchResults[indexPath.row]
-
-        // Firestore に保存
+        
+        // Firestore に保存 (image_url を含む)
         databaseControl.saveToFirestore(track: selectedTrack) { success in
             DispatchQueue.main.async {
                 if success {
-                    self.showAlert(title: "✅ お気に入り追加", message: "\(selectedTrack.name) をお気に入りに追加しました！")
+                    self.showAlert(
+                        title: "✅ お気に入り追加",
+                        message: "\(selectedTrack.name) をお気に入りに追加しました！"
+                    )
                 } else {
-                    self.showAlert(title: "❌ エラー", message: "お気に入り追加に失敗しました。")
+                    self.showAlert(
+                        title: "❌ エラー",
+                        message: "お気に入り追加に失敗しました。"
+                    )
                 }
             }
         }
+        
+        // 選択状態を解除
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
-    // ✅ 【修正】アラートを表示する関数
+    // MARK: - Alert
+
+    /// アラート表示用共通関数
     private func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
 }
-

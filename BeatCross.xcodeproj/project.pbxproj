@@ -49,7 +49,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		170962FA2D530EBB0040CBBB /* Exceptions for "BeatCross" folder in "BeatCross" target */ = {
+		016337352D55E468005253F0 /* Exceptions for "BeatCross" folder in "BeatCross" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -62,7 +62,7 @@
 		17949A752D526AA100FAD512 /* BeatCross */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				170962FA2D530EBB0040CBBB /* Exceptions for "BeatCross" folder in "BeatCross" target */,
+				016337352D55E468005253F0 /* Exceptions for "BeatCross" folder in "BeatCross" target */,
 			);
 			path = BeatCross;
 			sourceTree = "<group>";
