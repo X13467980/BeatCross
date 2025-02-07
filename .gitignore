@@ -3,6 +3,3 @@
 *.plist
 BeatCross/GoogleService-Info.plist
 BeatCross/Info.plist
-*.xcuserdata
-*.xcworkspace
-Pods
