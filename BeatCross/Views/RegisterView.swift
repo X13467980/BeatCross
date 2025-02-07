@@ -12,6 +12,7 @@ import FirebaseFirestore
 struct RegisterView: View {
     @State private var email = ""
     @State private var password = ""
+    @State private var name = ""
     @State private var errorMessage: String? = nil
     @State private var navigateToHome: Bool = false
 
@@ -22,6 +23,10 @@ struct RegisterView: View {
                     .font(.title)
                     .fontWeight(.bold)
                 
+                TextField("Name", text: $name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .autocapitalization(.words)
+
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
@@ -71,7 +76,10 @@ struct RegisterView: View {
             let db = Firestore.firestore()
             let userData: [String: Any] = [
                 "email": email,
-                "createdAt": Timestamp(date: Date())
+                "name": name,
+                "favorite_song": NSNull(), // nilの代わりにNSNull()
+                "createdAt": Timestamp(date: Date()),
+                "encounter_uid": [] // 空の配列で初期化
             ]
             
             db.collection("users").document(user.uid).setData(userData) { error in
