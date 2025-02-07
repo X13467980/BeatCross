@@ -15,9 +15,37 @@ struct SpotifyTokenResponse: Decodable {
 
 struct SpotifySearchResponse: Decodable {
     let tracks: Tracks
-    
+
     struct Tracks: Decodable {
         let items: [SpotifyTrack]
+    }
+}
+
+// **SpotifyTrack の定義をここに統一**
+struct SpotifyTrack: Decodable {
+    let id: String
+    let name: String
+    let preview_url: String?
+    let album: Album
+    let artists: [Artist]
+    let external_urls: ExternalUrls
+    var image_url: String?  // ← `let` を `var` に変更
+
+    struct Album: Decodable {
+        let name: String
+        let images: [AlbumImage]
+    }
+
+    struct AlbumImage: Decodable {
+        let url: String
+    }
+
+    struct Artist: Decodable {
+        let name: String
+    }
+
+    struct ExternalUrls: Decodable {
+        let spotify: String
     }
 }
 
@@ -37,25 +65,19 @@ class SpotifySearchManager {
         }
         let base64Credential = credentialData.base64EncodedString()
 
-        let headers: HTTPHeaders = [
-            "Authorization": "Basic \(base64Credential)",
-            "Content-Type": "application/x-www-form-urlencoded"
-        ]
+        let headers: HTTPHeaders = ["Authorization": "Basic \(base64Credential)", "Content-Type": "application/x-www-form-urlencoded"]
 
-        AF.request(url, method: .post, parameters: parameters, encoder: URLEncodedFormParameterEncoder.default, headers: headers)
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: SpotifyTokenResponse.self) { response in
-                switch response.result {
-                case .success(let tokenResponse):
-                    self.spotifyAccessToken = tokenResponse.access_token
-                    completion(tokenResponse.access_token)
-                case .failure:
-                    completion(nil)
-                }
+        AF.request(url, method: .post, parameters: parameters, headers: headers).responseDecodable(of: SpotifyTokenResponse.self) { response in
+            guard let tokenResponse = response.value else {
+                completion(nil)
+                return
             }
+            self.spotifyAccessToken = tokenResponse.access_token
+            completion(tokenResponse.access_token)
+        }
     }
 
-    func searchSpotify(query: String, completion: @escaping ([SpotifyTrack]?) -> Void) {
+    func searchTrack(query: String, completion: @escaping ([SpotifyTrack]?) -> Void) {
         guard let token = spotifyAccessToken else {
             completion(nil)
             return
@@ -65,16 +87,19 @@ class SpotifySearchManager {
         let parameters: [String: Any] = ["q": query, "type": "track", "limit": 10]
         let headers: HTTPHeaders = ["Authorization": "Bearer \(token)"]
 
-        AF.request(url, method: .get, parameters: parameters, headers: headers)
-            .validate(statusCode: 200..<300)
-            .responseDecodable(of: SpotifySearchResponse.self) { response in
-                switch response.result {
-                case .success(let searchResponse):
-                    completion(searchResponse.tracks.items)
-                case .failure:
-                    completion(nil)
-                }
+        AF.request(url, method: .get, parameters: parameters, headers: headers).responseDecodable(of: SpotifySearchResponse.self) { response in
+            guard let searchResponse = response.value else {
+                completion(nil)
+                return
             }
+
+            let tracks = searchResponse.tracks.items.map { track in
+                var newTrack = track
+                newTrack.image_url = track.album.images.first?.url  // ジャケット画像のURLを追加
+                return newTrack
+            }
+
+            completion(tracks)
+        }
     }
 }
-
