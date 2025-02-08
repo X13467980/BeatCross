@@ -1,10 +1,3 @@
-//
-//  RegisterView.swift
-//  BeatCross
-//
-//  Created by X on 2025/01/06.
-//
-
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
@@ -14,7 +7,6 @@ struct RegisterView: View {
     @State private var password = ""
     @State private var name = ""
     @State private var errorMessage: String? = nil
-    @State private var navigateToHome: Bool = false
     @State private var showSuccessAlert: Bool = false // 成功アラート表示用
 
     var body: some View {
@@ -30,7 +22,6 @@ struct RegisterView: View {
                         .font(.largeTitle)
                         .foregroundColor(.white)
                         .fontWeight(.bold)
-                    
                     
                     TextField("Name", text: $name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -63,25 +54,20 @@ struct RegisterView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10)) // 角丸の適用
                             .overlay( // ボーダーの適用
                                 RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.white, lineWidth: 0.8)
+                                    .stroke(Color.white, lineWidth: 0.8)
                             )
                     }
                     
                 }
                 .padding()
-//                .navigationTitle("Register")
-                .navigationDestination(isPresented: $navigateToHome) {
-                    HomeView()
-                }
                 .alert("登録成功", isPresented: $showSuccessAlert) {
                     Button("OK") {
-                        navigateToHome = true // OKを押したらHomeViewへ遷移
+                        openSpotifySearch() // OKを押したら SpotifySearchViewController へ遷移
                     }
                 } message: {
                     Text("アカウントが正常に作成されました！")
                 }
             }
-           
         }
     }
     
@@ -97,12 +83,12 @@ struct RegisterView: View {
                 return
             }
             
-            // Firestoreにユーザー情報を追加
+            // Firestore にユーザー情報を追加
             let db = Firestore.firestore()
             let userData: [String: Any] = [
                 "email": email,
                 "name": name,
-                "favorite_song": NSNull(), // nilの代わりにNSNull()
+                "favorite_song": NSNull(), // nil の代わりに NSNull()
                 "createdAt": Timestamp(date: Date()),
                 "encounter_uid": [] // 空の配列で初期化
             ]
@@ -115,6 +101,15 @@ struct RegisterView: View {
                     self.showSuccessAlert = true // 登録成功時にアラート表示
                 }
             }
+        }
+    }
+    
+    /// **UIKit の `SpotifySearchViewController` を開く**
+    private func openSpotifySearch() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            let searchVC = SpotifySearchViewController()
+            rootVC.present(searchVC, animated: true)
         }
     }
 }
