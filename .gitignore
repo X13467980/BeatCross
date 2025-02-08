@@ -36,7 +36,6 @@ fastlane/test_output
 
 # Provisioning Profiles
 *.mobileprovision
-*.pbxproj
 
 # Simulator files
 Library/Preferences/com.apple.iphonesimulator.plist
