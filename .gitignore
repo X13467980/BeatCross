@@ -4,16 +4,6 @@
 BeatCross/GoogleService-Info.plist
 BeatCross/Info.plist
 
-# Xcode user data
-*.xcuserdatad/
-*.xcuserdata/
-
-.DS_Store
-*.plist
-*.plist
-BeatCross/GoogleService-Info.plist
-BeatCross/Info.plist
-
 # Xcode
 .DS_Store
 .build/
