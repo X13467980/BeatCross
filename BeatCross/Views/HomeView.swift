@@ -152,6 +152,7 @@ struct HomeView: View {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
             let searchVC = SpotifySearchViewController()
+            searchVC.modalPresentationStyle = .fullScreen // フルスクリーン表示を適用
             rootVC.present(searchVC, animated: true)
         }
     }

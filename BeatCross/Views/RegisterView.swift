@@ -7,12 +7,10 @@ struct RegisterView: View {
     @State private var password = ""
     @State private var name = ""
     @State private var errorMessage: String? = nil
-    @State private var navigateToHome: Bool = false
     @State private var showSuccessAlert: Bool = false // 成功アラート表示用
-    @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStack {
             ZStack {
                 Image("backGroundImage")
                     .resizable()
@@ -62,15 +60,9 @@ struct RegisterView: View {
                     
                 }
                 .padding()
-                .navigationDestination(isPresented: $navigateToHome) {
-                    HomeView()
-                        .onAppear {
-                            navigationPath = NavigationPath() // ナビゲーション履歴を完全にリセット
-                        }
-                }
                 .alert("登録成功", isPresented: $showSuccessAlert) {
                     Button("OK") {
-                        navigateToHome = true // OKを押したら HomeView へ遷移
+                        openSpotifySearch() // OKを押したら SpotifySearchViewController へ遷移
                     }
                 } message: {
                     Text("アカウントが正常に作成されました！")
@@ -91,7 +83,7 @@ struct RegisterView: View {
                 return
             }
             
-            // Firestoreにユーザー情報を追加
+            // Firestore にユーザー情報を追加
             let db = Firestore.firestore()
             let userData: [String: Any] = [
                 "email": email,
@@ -109,6 +101,15 @@ struct RegisterView: View {
                     self.showSuccessAlert = true // 登録成功時にアラート表示
                 }
             }
+        }
+    }
+    
+    /// **UIKit の `SpotifySearchViewController` を開く**
+    private func openSpotifySearch() {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootVC = windowScene.windows.first?.rootViewController {
+            let searchVC = SpotifySearchViewController()
+            rootVC.present(searchVC, animated: true)
         }
     }
 }
