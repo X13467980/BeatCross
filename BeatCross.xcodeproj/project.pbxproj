@@ -1,0 +1,741 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		165EF1640B906FAA05DA9B60 /* Pods_BeatCross_BeatCrossUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F959BD6D0576EC6FFED2A50 /* Pods_BeatCross_BeatCrossUITests.framework */; };
+		170962BE2D527AC50040CBBB /* test.txt in Resources */ = {isa = PBXBuildFile; fileRef = 170962BD2D527AB40040CBBB /* test.txt */; };
+		17949ABF2D526CC000FAD512 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 17949ABD2D526CBA00FAD512 /* .gitignore */; };
+		B878DC403421F342BC76E3A5 /* Pods_BeatCross.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1ADE9F0540680D102571748 /* Pods_BeatCross.framework */; };
+		C1B3EA5AB70699E6E06C788D /* Pods_BeatCrossTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C020581B59574F5ACA2BC5E /* Pods_BeatCrossTests.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		17949A842D526AA200FAD512 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17949A6B2D526AA100FAD512 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17949A722D526AA100FAD512;
+			remoteInfo = BeatCross;
+		};
+		17949A8E2D526AA200FAD512 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17949A6B2D526AA100FAD512 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17949A722D526AA100FAD512;
+			remoteInfo = BeatCross;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		170962BD2D527AB40040CBBB /* test.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = test.txt; sourceTree = "<group>"; };
+		17949A732D526AA100FAD512 /* BeatCross.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatCross.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		17949A832D526AA200FAD512 /* BeatCrossTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		17949A8D2D526AA200FAD512 /* BeatCrossUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeatCrossUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		17949ABD2D526CBA00FAD512 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		236B5DA063B852571659AF62 /* Pods-BeatCross.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeatCross.debug.xcconfig"; path = "Target Support Files/Pods-BeatCross/Pods-BeatCross.debug.xcconfig"; sourceTree = "<group>"; };
+		2C020581B59574F5ACA2BC5E /* Pods_BeatCrossTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BeatCrossTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		521146B10E17A36CEE8D3533 /* Pods-BeatCross.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeatCross.release.xcconfig"; path = "Target Support Files/Pods-BeatCross/Pods-BeatCross.release.xcconfig"; sourceTree = "<group>"; };
+		5F959BD6D0576EC6FFED2A50 /* Pods_BeatCross_BeatCrossUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BeatCross_BeatCrossUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B956F1E4C9E9E584F79FAB1 /* Pods-BeatCross-BeatCrossUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeatCross-BeatCrossUITests.debug.xcconfig"; path = "Target Support Files/Pods-BeatCross-BeatCrossUITests/Pods-BeatCross-BeatCrossUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		A1ADE9F0540680D102571748 /* Pods_BeatCross.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BeatCross.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A826C91675CBB220F6C87164 /* Pods-BeatCross-BeatCrossUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeatCross-BeatCrossUITests.release.xcconfig"; path = "Target Support Files/Pods-BeatCross-BeatCrossUITests/Pods-BeatCross-BeatCrossUITests.release.xcconfig"; sourceTree = "<group>"; };
+		B28AB510BB5CB8938CADD3A5 /* Pods-BeatCrossTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeatCrossTests.release.xcconfig"; path = "Target Support Files/Pods-BeatCrossTests/Pods-BeatCrossTests.release.xcconfig"; sourceTree = "<group>"; };
+		F885E74CA851AC40F3D73747 /* Pods-BeatCrossTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeatCrossTests.debug.xcconfig"; path = "Target Support Files/Pods-BeatCrossTests/Pods-BeatCrossTests.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		170962FA2D530EBB0040CBBB /* Exceptions for "BeatCross" folder in "BeatCross" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 17949A722D526AA100FAD512 /* BeatCross */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		17949A752D526AA100FAD512 /* BeatCross */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				170962FA2D530EBB0040CBBB /* Exceptions for "BeatCross" folder in "BeatCross" target */,
+			);
+			path = BeatCross;
+			sourceTree = "<group>";
+		};
+		17949A862D526AA200FAD512 /* BeatCrossTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BeatCrossTests;
+			sourceTree = "<group>";
+		};
+		17949A902D526AA200FAD512 /* BeatCrossUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = BeatCrossUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		17949A702D526AA100FAD512 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B878DC403421F342BC76E3A5 /* Pods_BeatCross.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17949A802D526AA200FAD512 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C1B3EA5AB70699E6E06C788D /* Pods_BeatCrossTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17949A8A2D526AA200FAD512 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				165EF1640B906FAA05DA9B60 /* Pods_BeatCross_BeatCrossUITests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		17949A6A2D526AA100FAD512 = {
+			isa = PBXGroup;
+			children = (
+				170962BD2D527AB40040CBBB /* test.txt */,
+				17949A752D526AA100FAD512 /* BeatCross */,
+				17949A862D526AA200FAD512 /* BeatCrossTests */,
+				17949A902D526AA200FAD512 /* BeatCrossUITests */,
+				17949A742D526AA100FAD512 /* Products */,
+				17949ABD2D526CBA00FAD512 /* .gitignore */,
+				6499DA48578AC6F81803C7E1 /* Pods */,
+				38EA83CF0D3C025BBE951C15 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		17949A742D526AA100FAD512 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				17949A732D526AA100FAD512 /* BeatCross.app */,
+				17949A832D526AA200FAD512 /* BeatCrossTests.xctest */,
+				17949A8D2D526AA200FAD512 /* BeatCrossUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		38EA83CF0D3C025BBE951C15 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1ADE9F0540680D102571748 /* Pods_BeatCross.framework */,
+				5F959BD6D0576EC6FFED2A50 /* Pods_BeatCross_BeatCrossUITests.framework */,
+				2C020581B59574F5ACA2BC5E /* Pods_BeatCrossTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6499DA48578AC6F81803C7E1 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				236B5DA063B852571659AF62 /* Pods-BeatCross.debug.xcconfig */,
+				521146B10E17A36CEE8D3533 /* Pods-BeatCross.release.xcconfig */,
+				7B956F1E4C9E9E584F79FAB1 /* Pods-BeatCross-BeatCrossUITests.debug.xcconfig */,
+				A826C91675CBB220F6C87164 /* Pods-BeatCross-BeatCrossUITests.release.xcconfig */,
+				F885E74CA851AC40F3D73747 /* Pods-BeatCrossTests.debug.xcconfig */,
+				B28AB510BB5CB8938CADD3A5 /* Pods-BeatCrossTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		17949A722D526AA100FAD512 /* BeatCross */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17949A972D526AA200FAD512 /* Build configuration list for PBXNativeTarget "BeatCross" */;
+			buildPhases = (
+				D86BA3C31D9F34893449ADE7 /* [CP] Check Pods Manifest.lock */,
+				17949A6F2D526AA100FAD512 /* Sources */,
+				17949A702D526AA100FAD512 /* Frameworks */,
+				17949A712D526AA100FAD512 /* Resources */,
+				A54A4E46C4B0543F25B734E4 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				17949A752D526AA100FAD512 /* BeatCross */,
+			);
+			name = BeatCross;
+			productName = BeatCross;
+			productReference = 17949A732D526AA100FAD512 /* BeatCross.app */;
+			productType = "com.apple.product-type.application";
+		};
+		17949A822D526AA200FAD512 /* BeatCrossTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17949A9A2D526AA200FAD512 /* Build configuration list for PBXNativeTarget "BeatCrossTests" */;
+			buildPhases = (
+				351B414D469F0ECF4D235E60 /* [CP] Check Pods Manifest.lock */,
+				17949A7F2D526AA200FAD512 /* Sources */,
+				17949A802D526AA200FAD512 /* Frameworks */,
+				17949A812D526AA200FAD512 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17949A852D526AA200FAD512 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				17949A862D526AA200FAD512 /* BeatCrossTests */,
+			);
+			name = BeatCrossTests;
+			productName = BeatCrossTests;
+			productReference = 17949A832D526AA200FAD512 /* BeatCrossTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		17949A8C2D526AA200FAD512 /* BeatCrossUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 17949A9D2D526AA200FAD512 /* Build configuration list for PBXNativeTarget "BeatCrossUITests" */;
+			buildPhases = (
+				EA32F1BF1174D864156FA144 /* [CP] Check Pods Manifest.lock */,
+				17949A892D526AA200FAD512 /* Sources */,
+				17949A8A2D526AA200FAD512 /* Frameworks */,
+				17949A8B2D526AA200FAD512 /* Resources */,
+				97CB4919E95A62B430549EF2 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				17949A8F2D526AA200FAD512 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				17949A902D526AA200FAD512 /* BeatCrossUITests */,
+			);
+			name = BeatCrossUITests;
+			productName = BeatCrossUITests;
+			productReference = 17949A8D2D526AA200FAD512 /* BeatCrossUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		17949A6B2D526AA100FAD512 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					17949A722D526AA100FAD512 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					17949A822D526AA200FAD512 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 17949A722D526AA100FAD512;
+					};
+					17949A8C2D526AA200FAD512 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 17949A722D526AA100FAD512;
+					};
+				};
+			};
+			buildConfigurationList = 17949A6E2D526AA100FAD512 /* Build configuration list for PBXProject "BeatCross" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 17949A6A2D526AA100FAD512;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 17949A742D526AA100FAD512 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				17949A722D526AA100FAD512 /* BeatCross */,
+				17949A822D526AA200FAD512 /* BeatCrossTests */,
+				17949A8C2D526AA200FAD512 /* BeatCrossUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		17949A712D526AA100FAD512 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				17949ABF2D526CC000FAD512 /* .gitignore in Resources */,
+				170962BE2D527AC50040CBBB /* test.txt in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17949A812D526AA200FAD512 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17949A8B2D526AA200FAD512 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		351B414D469F0ECF4D235E60 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BeatCrossTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		97CB4919E95A62B430549EF2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BeatCross-BeatCrossUITests/Pods-BeatCross-BeatCrossUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BeatCross-BeatCrossUITests/Pods-BeatCross-BeatCrossUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BeatCross-BeatCrossUITests/Pods-BeatCross-BeatCrossUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A54A4E46C4B0543F25B734E4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BeatCross/Pods-BeatCross-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BeatCross/Pods-BeatCross-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BeatCross/Pods-BeatCross-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D86BA3C31D9F34893449ADE7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BeatCross-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EA32F1BF1174D864156FA144 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BeatCross-BeatCrossUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		17949A6F2D526AA100FAD512 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17949A7F2D526AA200FAD512 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		17949A892D526AA200FAD512 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		17949A852D526AA200FAD512 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17949A722D526AA100FAD512 /* BeatCross */;
+			targetProxy = 17949A842D526AA200FAD512 /* PBXContainerItemProxy */;
+		};
+		17949A8F2D526AA200FAD512 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17949A722D526AA100FAD512 /* BeatCross */;
+			targetProxy = 17949A8E2D526AA200FAD512 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		17949A952D526AA200FAD512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		17949A962D526AA200FAD512 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		17949A982D526AA200FAD512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 236B5DA063B852571659AF62 /* Pods-BeatCross.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"BeatCross/Preview Content\"";
+				DEVELOPMENT_TEAM = 4P7294LB4Y;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeatCross/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.BeatCross;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		17949A992D526AA200FAD512 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 521146B10E17A36CEE8D3533 /* Pods-BeatCross.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"BeatCross/Preview Content\"";
+				DEVELOPMENT_TEAM = 4P7294LB4Y;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BeatCross/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.BeatCross;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		17949A9B2D526AA200FAD512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F885E74CA851AC40F3D73747 /* Pods-BeatCrossTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4P7294LB4Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.BeatCrossTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeatCross.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BeatCross";
+			};
+			name = Debug;
+		};
+		17949A9C2D526AA200FAD512 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B28AB510BB5CB8938CADD3A5 /* Pods-BeatCrossTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4P7294LB4Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.BeatCrossTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/BeatCross.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/BeatCross";
+			};
+			name = Release;
+		};
+		17949A9E2D526AA200FAD512 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7B956F1E4C9E9E584F79FAB1 /* Pods-BeatCross-BeatCrossUITests.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4P7294LB4Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.BeatCrossUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BeatCross;
+			};
+			name = Debug;
+		};
+		17949A9F2D526AA200FAD512 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A826C91675CBB220F6C87164 /* Pods-BeatCross-BeatCrossUITests.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 4P7294LB4Y;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = test.BeatCrossUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = BeatCross;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		17949A6E2D526AA100FAD512 /* Build configuration list for PBXProject "BeatCross" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17949A952D526AA200FAD512 /* Debug */,
+				17949A962D526AA200FAD512 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		17949A972D526AA200FAD512 /* Build configuration list for PBXNativeTarget "BeatCross" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17949A982D526AA200FAD512 /* Debug */,
+				17949A992D526AA200FAD512 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		17949A9A2D526AA200FAD512 /* Build configuration list for PBXNativeTarget "BeatCrossTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17949A9B2D526AA200FAD512 /* Debug */,
+				17949A9C2D526AA200FAD512 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		17949A9D2D526AA200FAD512 /* Build configuration list for PBXNativeTarget "BeatCrossUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				17949A9E2D526AA200FAD512 /* Debug */,
+				17949A9F2D526AA200FAD512 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 17949A6B2D526AA100FAD512 /* Project object */;
+}
