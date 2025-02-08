@@ -50,7 +50,6 @@
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
 		01BA00BD2D54E7C600DEFC27 /* Exceptions for "BeatCross" folder in "BeatCross" target */ = {
-    
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
