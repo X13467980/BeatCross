@@ -6,10 +6,13 @@
 //
 
 import SwiftUI
+import FirebaseAuth
+import FirebaseFirestore
 
 struct RegisterView: View {
     @State private var email = ""
     @State private var password = ""
+    @State private var name = ""
     @State private var errorMessage: String? = nil
     @State private var navigateToHome: Bool = false
 
@@ -20,6 +23,10 @@ struct RegisterView: View {
                     .font(.title)
                     .fontWeight(.bold)
                 
+                TextField("Name", text: $name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .autocapitalization(.words)
+
                 TextField("Email", text: $email)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .autocapitalization(.none)
@@ -54,13 +61,34 @@ struct RegisterView: View {
     }
     
     func registerUser() {
-        AuthManager.shared.register(email: email, password: password) { result in
-            switch result {
-            case .success:
-                errorMessage = nil
-                navigateToHome = true // 成功時にHomeViewへ遷移
-            case .failure(let error):
-                errorMessage = error.localizedDescription
+        Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
+            if let error = error {
+                self.errorMessage = error.localizedDescription
+                return
+            }
+            
+            guard let user = authResult?.user else {
+                self.errorMessage = "Failed to get user."
+                return
+            }
+            
+            // Firestoreにユーザー情報を追加
+            let db = Firestore.firestore()
+            let userData: [String: Any] = [
+                "email": email,
+                "name": name,
+                "favorite_song": NSNull(), // nilの代わりにNSNull()
+                "createdAt": Timestamp(date: Date()),
+                "encounter_uid": [] // 空の配列で初期化
+            ]
+            
+            db.collection("users").document(user.uid).setData(userData) { error in
+                if let error = error {
+                    self.errorMessage = "Firestore error: \(error.localizedDescription)"
+                } else {
+                    self.errorMessage = nil
+                    self.navigateToHome = true // 成功時にHomeViewへ遷移
+                }
             }
         }
     }

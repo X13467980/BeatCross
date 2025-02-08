@@ -26,6 +26,7 @@ class SpotifySearchManager {
     private let clientSecret = Bundle.main.object(forInfoDictionaryKey: "SPOTIFY_CLIENT_SECRET") as? String ?? ""
     private var spotifyAccessToken: String?
 
+    /// Spotifyのトークンを取得
     func fetchSpotifyAccessToken(completion: @escaping (String?) -> Void) {
         let url = "https://accounts.spotify.com/api/token"
         let parameters = ["grant_type": "client_credentials"]
@@ -55,6 +56,7 @@ class SpotifySearchManager {
             }
     }
 
+    /// Spotifyの検索API
     func searchSpotify(query: String, completion: @escaping ([SpotifyTrack]?) -> Void) {
         guard let token = spotifyAccessToken else {
             completion(nil)
@@ -77,4 +79,3 @@ class SpotifySearchManager {
             }
     }
 }
-

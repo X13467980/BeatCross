@@ -3,6 +3,7 @@
 //  BeatCross
 //
 //  Created by 尾崎陽介 on 2025/02/03.
+//  Edited by 尾崎陽介 on 2025/02/07
 //
 
 import FirebaseFirestore
@@ -18,6 +19,14 @@ struct SpotifyTrack: Decodable {
     
     struct Album: Decodable {
         let name: String
+        // images を追加してアルバムアートを取得
+        let images: [AlbumImage]?
+    }
+    
+    struct AlbumImage: Decodable {
+        let url: String
+        let height: Int?
+        let width: Int?
     }
     
     struct Artist: Decodable {
@@ -31,25 +40,28 @@ struct SpotifyTrack: Decodable {
 
 class DatabaseControl {
     private let db = Firestore.firestore()
-
-    /// **ユーザーのお気に入り & グローバルな favorite_song に保存**
+    
+    /// ユーザーのお気に入り & "songs" コレクションに保存
+    /// - Parameters:
+    ///   - track: Spotifyのトラック情報
+    ///   - completion: 成功 / 失敗をBoolで返却
     func saveToFirestore(track: SpotifyTrack, completion: @escaping (Bool) -> Void) {
         guard let currentUser = Auth.auth().currentUser else {
             print("❌ ユーザーがログインしていません")
             completion(false)
             return
         }
-
-        let userFavoriteRef = db
-            .collection("user")
-            .document(currentUser.uid)
-            .collection("favorite_song")
-            .document(track.id)
-
-        let globalFavoriteRef = db
-            .collection("favorite_song")
-            .document(track.id)
-
+        
+        // users > {uid} (Document)
+        let userDocRef = db.collection("users").document(currentUser.uid)
+        
+        // songs > {track.id} (Document)
+        let songDocRef = db.collection("songs").document(track.id)
+        
+        // 取得したアルバムアートの先頭URLを使用
+        let imageUrl = track.album.images?.first?.url ?? ""
+        
+        // Firestoreに保存したい曲情報
         let songData: [String: Any] = [
             "song_id": track.id,
             "name": track.name,
@@ -57,13 +69,22 @@ class DatabaseControl {
             "artists": track.artists.map { $0.name },
             "external_urls": track.external_urls.spotify,
             "preview_url": track.preview_url ?? "",
-            "savedAt": Timestamp()
+            "savedAt": Timestamp(),
+            "image_url": imageUrl   // 取得したアルバムアートURLを格納
         ]
-
+        
         let batch = db.batch()
-        batch.setData(songData, forDocument: userFavoriteRef)
-        batch.setData(songData, forDocument: globalFavoriteRef, merge: true)
-
+        
+        // 1. ユーザードキュメントの "favorite_song" フィールド（配列）に曲情報を追加
+        //    ドキュメントが無い場合も作成したいので setData(..., merge: true) を使う
+        batch.setData(["favorite_song": FieldValue.arrayUnion([songData])],
+                      forDocument: userDocRef,
+                      merge: true)
+        
+        // 2. "songs" コレクションに曲情報を保存 (なければ新規作成、あればデータをマージ)
+        batch.setData(songData, forDocument: songDocRef, merge: true)
+        
+        // 3. バッチのコミット
         batch.commit { error in
             if let error = error {
                 print("❌ Firestore保存エラー: \(error)")
@@ -75,3 +96,4 @@ class DatabaseControl {
         }
     }
 }
+

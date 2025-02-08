@@ -1,26 +1,12 @@
-//
-//  HomeView.swift
-//  BeatCross
-//
-//  Created by X on 2025/01/06.
-//
-
 import SwiftUI
 
-struct Song: Identifiable, Decodable {
-    let id = UUID()
-    let image: String // 画像のURLまたはアセット名
-    let title: String
-    let artist: String
-}
-
 struct HomeView: View {
-    @State private var receivedSongs: [Song] = [
-        Song(image: "album1", title: "Song Title 1", artist: "Artist 1"),
-        Song(image: "album2", title: "Song Title 2", artist: "Artist 2"),
-        Song(image: "album3", title: "Song Title 3", artist: "Artist 3")
-    ]
-
+    // Firestore から取得した曲データを格納する変数
+    @State private var encounteredSongs: [EncounteredUserFavSong] = []
+    
+    // Firebase からデータを取得するマネージャ
+    private let favSongManager = GetFavSongManager()
+    
     var body: some View {
         NavigationStack {
             VStack(alignment: .leading, spacing: 20) {
@@ -29,24 +15,25 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .padding(.top)
 
+                // ここでは encounteredSongs をそのまま表示する例
                 ScrollView {
-                    ForEach(receivedSongs) { song in
+                    ForEach(encounteredSongs, id: \.song_id) { song in
                         HStack {
-                            Image(song.image)
+                            // 画像URLを使う場合は、ライブラリ等でURL画像を表示
+                            // ここではプレースホルダーとしてイメージを使っています
+                            Image(systemName: "photo")
                                 .resizable()
                                 .scaledToFill()
                                 .frame(width: 60, height: 60)
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
-
+                            
                             VStack(alignment: .leading) {
-                                Text(song.title)
+                                Text(song.name)
                                     .font(.headline)
-
-                                Text(song.artist)
+                                Text(song.artists.joined(separator: ", "))
                                     .font(.subheadline)
                                     .foregroundColor(.secondary)
                             }
-
                             Spacer()
                         }
                         .padding(.vertical, 8)
@@ -87,8 +74,29 @@ struct HomeView: View {
                 }
             }
         }
+        // HomeView が表示されたときに自動で呼び出す
+        .onAppear {
+            favSongManager.fetchEncounteredUsersFavSongs { fetchedSongs in
+                // 1. 受け取った曲データを State に格納
+                encounteredSongs = fetchedSongs
+                
+                // 2. ログに出してみる
+                print("----- [HomeView] fetchEncounteredUsersFavSongs 結果 -----")
+                for song in fetchedSongs {
+                    print("""
+                    \nユーザーID: \(song.userId)
+                    曲ID: \(song.song_id)
+                    タイトル: \(song.name)
+                    アルバム: \(song.album)
+                    アーティスト: \(song.artists.joined(separator: ", "))
+                    保存日時: \(song.savedAt.dateValue())
+                    画像URL: \(song.image_url)
+                    """)
+                }
+            }
+        }
     }
-
+    
     // SwiftUI から UIKit の `SpotifySearchViewController` を開く
     private func openSpotifySearch() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
