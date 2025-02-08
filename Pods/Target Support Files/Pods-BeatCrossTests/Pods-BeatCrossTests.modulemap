@@ -1,6 +1,0 @@
-framework module Pods_BeatCrossTests {
-  umbrella header "Pods-BeatCrossTests-umbrella.h"
-
-  export *
-  module * { export * }
-}
