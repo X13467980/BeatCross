@@ -15,7 +15,9 @@ struct RegisterView: View {
     @State private var name = ""
     @State private var errorMessage: String? = nil
     @State private var navigateToHome: Bool = false
-    @State private var showSuccessAlert: Bool = false // 成功アラート表示用
+    @State private var showSuccessAlert: Bool = false //成功アラート表示用
+    @State private var navigationPath = NavigationPath()
+    @State private var isHomeActive = false
 
     var body: some View {
         NavigationStack {

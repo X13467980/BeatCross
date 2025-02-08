@@ -127,6 +127,7 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Home")
+            .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
