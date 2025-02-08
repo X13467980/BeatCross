@@ -19,52 +19,69 @@ struct RegisterView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                Text("Register")
-                    .font(.title)
-                    .fontWeight(.bold)
+            ZStack {
+                Image("backGroundImage")
+                    .resizable()
+                    .ignoresSafeArea()
+                    .scaledToFill()
                 
-                TextField("Name", text: $name)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.words)
-
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
-                    .keyboardType(.emailAddress)
-                
-                SecureField("Password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .font(.caption)
-                }
-                
-                Button(action: {
-                    registerUser()
-                }) {
+                VStack(spacing: 20) {
                     Text("Register")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
+                        .font(.largeTitle)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .fontWeight(.bold)
+                    
+                    
+                    TextField("Name", text: $name)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.words)
+
+                    TextField("Email", text: $email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                    
+                    SecureField("Password", text: $password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                    
+                    Button(action: {
+                        registerUser()
+                    }) {
+                        Text("Register")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.mainDarkBlue)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                            .cornerRadius(10)
+                            .clipShape(RoundedRectangle(cornerRadius: 10)) // 角丸の適用
+                            .overlay( // ボーダーの適用
+                                RoundedRectangle(cornerRadius: 10)
+                                .stroke(Color.white, lineWidth: 0.8)
+                            )
+                    }
+                    
+                }
+                .padding()
+//                .navigationTitle("Register")
+                .navigationDestination(isPresented: $navigateToHome) {
+                    HomeView()
+                }
+                .alert("登録成功", isPresented: $showSuccessAlert) {
+                    Button("OK") {
+                        navigateToHome = true // OKを押したらHomeViewへ遷移
+                    }
+                } message: {
+                    Text("アカウントが正常に作成されました！")
                 }
             }
-            .padding()
-            .navigationTitle("Register")
-            .navigationDestination(isPresented: $navigateToHome) {
-                HomeView()
-            }
-            .alert("登録成功", isPresented: $showSuccessAlert) {
-                Button("OK") {
-                    navigateToHome = true // OKを押したらHomeViewへ遷移
-                }
-            } message: {
-                Text("アカウントが正常に作成されました！")
-            }
+           
         }
     }
     
