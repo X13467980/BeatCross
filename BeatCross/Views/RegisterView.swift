@@ -1,10 +1,3 @@
-//
-//  RegisterView.swift
-//  BeatCross
-//
-//  Created by X on 2025/01/06.
-//
-
 import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
@@ -15,12 +8,11 @@ struct RegisterView: View {
     @State private var name = ""
     @State private var errorMessage: String? = nil
     @State private var navigateToHome: Bool = false
-    @State private var showSuccessAlert: Bool = false //成功アラート表示用
+    @State private var showSuccessAlert: Bool = false // 成功アラート表示用
     @State private var navigationPath = NavigationPath()
-    @State private var isHomeActive = false
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 Image("backGroundImage")
                     .resizable()
@@ -32,7 +24,6 @@ struct RegisterView: View {
                         .font(.largeTitle)
                         .foregroundColor(.white)
                         .fontWeight(.bold)
-                    
                     
                     TextField("Name", text: $name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -65,25 +56,26 @@ struct RegisterView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10)) // 角丸の適用
                             .overlay( // ボーダーの適用
                                 RoundedRectangle(cornerRadius: 10)
-                                .stroke(Color.white, lineWidth: 0.8)
+                                    .stroke(Color.white, lineWidth: 0.8)
                             )
                     }
                     
                 }
                 .padding()
-//                .navigationTitle("Register")
                 .navigationDestination(isPresented: $navigateToHome) {
                     HomeView()
+                        .onAppear {
+                            navigationPath = NavigationPath() // ナビゲーション履歴を完全にリセット
+                        }
                 }
                 .alert("登録成功", isPresented: $showSuccessAlert) {
                     Button("OK") {
-                        navigateToHome = true // OKを押したらHomeViewへ遷移
+                        navigateToHome = true // OKを押したら HomeView へ遷移
                     }
                 } message: {
                     Text("アカウントが正常に作成されました！")
                 }
             }
-           
         }
     }
     
@@ -104,7 +96,7 @@ struct RegisterView: View {
             let userData: [String: Any] = [
                 "email": email,
                 "name": name,
-                "favorite_song": NSNull(), // nilの代わりにNSNull()
+                "favorite_song": NSNull(), // nil の代わりに NSNull()
                 "createdAt": Timestamp(date: Date()),
                 "encounter_uid": [] // 空の配列で初期化
             ]
