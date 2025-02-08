@@ -15,6 +15,7 @@ struct RegisterView: View {
     @State private var name = ""
     @State private var errorMessage: String? = nil
     @State private var navigateToHome: Bool = false
+    @State private var showSuccessAlert: Bool = false // 成功アラート表示用
 
     var body: some View {
         NavigationStack {
@@ -57,6 +58,13 @@ struct RegisterView: View {
             .navigationDestination(isPresented: $navigateToHome) {
                 HomeView()
             }
+            .alert("登録成功", isPresented: $showSuccessAlert) {
+                Button("OK") {
+                    navigateToHome = true // OKを押したらHomeViewへ遷移
+                }
+            } message: {
+                Text("アカウントが正常に作成されました！")
+            }
         }
     }
     
@@ -87,7 +95,7 @@ struct RegisterView: View {
                     self.errorMessage = "Firestore error: \(error.localizedDescription)"
                 } else {
                     self.errorMessage = nil
-                    self.navigateToHome = true // 成功時にHomeViewへ遷移
+                    self.showSuccessAlert = true // 登録成功時にアラート表示
                 }
             }
         }
