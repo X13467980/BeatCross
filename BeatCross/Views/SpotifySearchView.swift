@@ -6,12 +6,26 @@
 //
 
 import UIKit
+import SwiftUICore
 
 class SpotifySearchView: UIView {
     let searchTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "アーティスト名または曲名"
         textField.borderStyle = .roundedRect
+        // デフォルトの枠線を削除
+        textField.borderStyle = .none
+        textField.textColor = .white// 入力文字の色を白に設定
+        // カスタム枠線の適用
+        textField.layer.borderColor = UIColor.white.cgColor // 枠線の色
+        textField.layer.borderWidth = 2.0 // 枠線の太さ
+        textField.layer.cornerRadius = 5.0 // 角丸の適用
+        
+        // プレースホルダーの色を白に設定
+           textField.attributedPlaceholder = NSAttributedString(
+               string: "アーティスト名または曲名",
+               attributes: [NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.7)]
+           )
         return textField
     }()
 
@@ -19,6 +33,14 @@ class SpotifySearchView: UIView {
         let button = UIButton(type: .system)
         button.setTitle("検索", for: .normal)
         button.titleLabel?.font = .boldSystemFont(ofSize: 16)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor(Color.mainDarkBlue)
+        // 角丸の適用
+        button.layer.cornerRadius = 10
+        button.layer.masksToBounds = true
+        // ボーダーの適用
+        button.layer.borderColor = UIColor.white.cgColor
+        button.layer.borderWidth = 1.5
         return button
     }()
 

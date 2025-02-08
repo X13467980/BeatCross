@@ -12,6 +12,7 @@ struct HomeView: View {
     @State private var encounteredSongs: [EncounteredUserFavSong] = []
     @GestureState private var dragOffset: CGFloat = 0
     private let favSongManager = GetFavSongManager()
+    @StateObject var cBTVM = CBTthVerificationViewModel()
     
     // ローカルのモックデータ
     let music = [
@@ -77,6 +78,7 @@ struct HomeView: View {
                             }
                         }
                 )
+               
                 
                 ScrollView {
                     ForEach(encounteredSongs, id: \ .song_id) { song in
