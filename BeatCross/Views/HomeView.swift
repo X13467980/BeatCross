@@ -128,17 +128,6 @@ struct HomeView: View {
             }
             .navigationTitle("Home")
             .navigationBarBackButtonHidden(true)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        openSpotifySearch()
-                    }) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.title2)
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
         }
         .onAppear {
             favSongManager.fetchEncounteredUsersFavSongs { fetchedSongs in
