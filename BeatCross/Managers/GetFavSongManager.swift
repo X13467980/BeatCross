@@ -2,106 +2,103 @@
 //  GetFavSongManager.swift
 //  BeatCross
 //
-//  Created by 尾崎陽介 on 2025/02/07.
+//  Created by (あなたの名前) on 2025/02/08.
 //
 
 import FirebaseFirestore
 import FirebaseAuth
 
-/// Firestore から取得したお気に入り曲データを格納するための構造体
-struct ExportedSong {
-    let title: String
-    let author: String
-    let image: String
-    let previewUrl: String? // 任意
-    let addedBy: String? // 任意（曲を設定したユーザーの名前）
+/// encounter_uid に含まれる他のユーザーが登録したお気に入り曲のデータ
+struct EncounteredUserFavSong {
+    /// お気に入りを登録したユーザーのID
+    let userId: String
+    
+    // 以下は favorite_song の各要素に対応するプロパティ
+    let song_id: String
+    let name: String
+    let album: String
+    let artists: [String]
+    let external_urls: String
+    let preview_url: String
+    let savedAt: Timestamp
+    let image_url: String
 }
 
 class GetFavSongManager {
     private let db = Firestore.firestore()
-    private var favoriteSongs: [ExportedSong] = []
-
-    /// `encounter` に登録されている `user_id` の `favorite_song` を取得
-    func fetchEncounterFavoriteSongs(completion: @escaping ([ExportedSong]) -> Void) {
+    
+    /// 現在のユーザーの encounter_uid 配列に含まれるユーザーのお気に入り曲をまとめて取得
+    /// - Parameter completion: 取得完了時に [EncounteredUserFavSong] を返す
+    func fetchEncounteredUsersFavSongs(completion: @escaping ([EncounteredUserFavSong]) -> Void) {
+        
+        // 1. ログインしているユーザーをチェック
         guard let currentUser = Auth.auth().currentUser else {
-            print("❌ ユーザーがログインしていません")
+            print("❌ fetchEncounteredUsersFavSongs: 未ログインユーザーです。")
             completion([])
             return
         }
-
-        let userRef = db.collection("user").document(currentUser.uid)
         
-        userRef.getDocument { document, error in
+        // 2. 「users > {currentUser.uid}」のドキュメントを取得
+        let currentUserDocRef = db.collection("users").document(currentUser.uid)
+        currentUserDocRef.getDocument { snapshot, error in
             if let error = error {
-                print("❌ `encounter` の取得エラー: \(error.localizedDescription)")
+                print("❌ currentUserDocRef.getDocument エラー: \(error)")
                 completion([])
                 return
             }
             
-            guard let document = document, document.exists,
-                  let encounterUserIds = document.data()?["encounter"] as? [String] else {
-                print("⚠️ `encounter` に登録されたユーザーがいません")
+            // 3. encounter_uid配列を取得
+            guard let data = snapshot?.data(),
+                  let encounterUidArray = data["encounter_uid"] as? [String] else {
+                print("⚠️ encounter_uid が存在しない / 配列ではない")
                 completion([])
                 return
             }
-
-            let dispatchGroup = DispatchGroup()
-            var songs: [ExportedSong] = []
-
-            for userId in encounterUserIds {
-                dispatchGroup.enter()
-                self.fetchFavoriteSongs(for: userId) { userSongs in
-                    songs.append(contentsOf: userSongs)
-                    dispatchGroup.leave()
-                }
-            }
-
-            dispatchGroup.notify(queue: .main) {
-                self.favoriteSongs = songs
-                completion(songs)
-            }
-        }
-    }
-
-    /// 指定した `user_id` の `favorite_song` を取得
-    private func fetchFavoriteSongs(for userId: String, completion: @escaping ([ExportedSong]) -> Void) {
-        let userRef = db.collection("user").document(userId)
-
-        userRef.getDocument { document, error in
-            if let error = error {
-                print("❌ ユーザー情報の取得エラー: \(error.localizedDescription)")
-                completion([])
-                return
-            }
-
-            let userName = document?.data()?["name"] as? String ?? "Unknown User"
-
-            let favoriteSongsRef = userRef.collection("favorite_song")
-            favoriteSongsRef.getDocuments { snapshot, error in
-                if let error = error {
-                    print("❌ `favorite_song` の取得エラー: \(error.localizedDescription)")
-                    completion([])
-                    return
-                }
-
-                guard let documents = snapshot?.documents else {
-                    completion([])
-                    return
-                }
-
-                let songs = documents.compactMap { doc -> ExportedSong? in
-                    let data = doc.data()
-                    guard let title = data["name"] as? String,
-                          let authors = data["artists"] as? [String],
-                          let image = data["image_url"] as? String else {
-                        return nil
+            
+            // 4. encounter_uid で列挙されているユーザーのドキュメントを取得し、favorite_song をまとめて取り出す
+            let group = DispatchGroup()
+            var allFavSongs: [EncounteredUserFavSong] = []
+            
+            for encounterUserId in encounterUidArray {
+                group.enter()
+                
+                let encounterUserDocRef = self.db.collection("users").document(encounterUserId)
+                encounterUserDocRef.getDocument { userSnapshot, userError in
+                    defer { group.leave() }  // このスコープを出るときに必ず leave
+                    
+                    if let userError = userError {
+                        print("❌ encounterUserDocRef.getDocument エラー: \(userError)")
+                        return
                     }
-
-                    let previewUrl = data["preview_url"] as? String
-                    return ExportedSong(title: title, author: authors.joined(separator: ", "), image: image, previewUrl: previewUrl, addedBy: userName)
+                    
+                    guard let userData = userSnapshot?.data(),
+                          let favSongArray = userData["favorite_song"] as? [[String: Any]] else {
+                        print("⚠️ userData なし / favorite_song フィールドなし")
+                        return
+                    }
+                    
+                    // 5. favorite_song の各要素を EncounteredUserFavSong に変換して格納
+                    for songDict in favSongArray {
+                        // Firestoreに保存している構造 (song_id, name, artists, external_urls, ...)
+                        let encounteredSong = EncounteredUserFavSong(
+                            userId: encounterUserId,
+                            song_id: songDict["song_id"] as? String ?? "",
+                            name: songDict["name"] as? String ?? "",
+                            album: songDict["album"] as? String ?? "",
+                            artists: songDict["artists"] as? [String] ?? [],
+                            external_urls: songDict["external_urls"] as? String ?? "",
+                            preview_url: songDict["preview_url"] as? String ?? "",
+                            savedAt: songDict["savedAt"] as? Timestamp ?? Timestamp(),
+                            image_url: songDict["image_url"] as? String ?? ""
+                        )
+                        allFavSongs.append(encounteredSong)
+                    }
                 }
-
-                completion(songs)
+            }
+            
+            // 6. 全ての取得処理が完了したらコールバックを呼ぶ
+            group.notify(queue: .main) {
+                completion(allFavSongs)
             }
         }
     }
