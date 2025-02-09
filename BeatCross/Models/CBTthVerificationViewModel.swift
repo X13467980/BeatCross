@@ -51,11 +51,11 @@ class CBTthVerificationViewModel: ObservableObject {
         }, receiveValue: {
             print("ああああ\($0)")
             self.RecievedData.append(CBModel(dataString: $0))
-            let encounterRef = self.db.collection("user").document(self.uid)
+            let encounterRef = self.db.collection("users").document(self.uid)
 
             // Atomically add a new region to the "regions" array field.
             encounterRef.updateData([
-              "encounter": FieldValue.arrayUnion([$0])
+              "encounter_uid": FieldValue.arrayUnion([$0])
             ])
             }
         )
