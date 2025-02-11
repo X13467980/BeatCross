@@ -124,9 +124,11 @@ struct ProfileView: View {
                     loadImage(from: url)
                 }
                 if let songs = document.get("favorite_song") as? [[String: Any]], !songs.isEmpty {
-                    // 最新の曲を取得 (最後の要素)
+                    // 最新の曲（最後に追加された曲）を取得
                     if let latestSong = songs.last {
                         self.favoriteSong = latestSong["name"] as? String ?? "お気に入り曲なし"
+                        
+                        // アーティストのリストを取得して文字列に変換
                         if let artists = latestSong["artists"] as? [String], !artists.isEmpty {
                             self.artistName = artists.joined(separator: ", ")
                         } else {
@@ -149,12 +151,10 @@ struct ProfileView: View {
         let newSong: [String: Any] = [
             "name": favoriteSong,
             "artists": artistName.components(separatedBy: ", "),
-            "savedAt": Timestamp(date: Date())  // Firestoreのタイムスタンプを使う
+            "savedAt": Timestamp(date: Date())
         ]
 
-        userRef.updateData([
-            "favorite_song": FieldValue.arrayUnion([newSong])
-        ]) { error in
+        userRef.setData(["favorite_song": [newSong]], merge: true) { error in
             if let error = error {
                 print("Error updating profile: \(error)")
             } else {
@@ -199,14 +199,14 @@ struct ProfileView: View {
     }
 
     // Spotify検索画面を開く
-        private func openSpotifySearch() {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                  let window = windowScene.windows.first,
-                  let rootVC = window.rootViewController else { return }
-            
-            let spotifyVC = SpotifySearchViewController()
-            rootVC.present(spotifyVC, animated: true)
-        }
+    private func openSpotifySearch() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let rootVC = window.rootViewController else { return }
+        
+        let spotifyVC = SpotifySearchViewController()
+        rootVC.present(spotifyVC, animated: true)
+    }
 }
 
 #Preview {
