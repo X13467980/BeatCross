@@ -13,14 +13,14 @@ struct ProfileView: View {
     @State private var artistName: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
-
+    
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
-
+    
     var body: some View {
         VStack {
             Spacer()
-
+            
             // プロフィール画像
             PhotosPicker(selection: $selectedItem, matching: .images) {
                 if let image = profileImage {
@@ -50,14 +50,14 @@ struct ProfileView: View {
                     }
                 }
             }
-
+            
             // 名前の編集
             TextField("名前を入力", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .frame(width: 200)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 20)
-
+            
             // お気に入り曲
             VStack {
                 Text("お気に入り曲")
@@ -72,7 +72,7 @@ struct ProfileView: View {
                 }
             }
             .padding(.bottom, 10)
-
+            
             // お気に入り曲変更ボタン（UIKit 画面を開く）
             Button(action: {
                 openSpotifySearch()
@@ -85,7 +85,7 @@ struct ProfileView: View {
                     .cornerRadius(10)
             }
             .padding(.bottom, 20)
-
+            
             // 保存ボタン
             Button(action: {
                 updateUserProfile()
@@ -100,7 +100,7 @@ struct ProfileView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("保存完了"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-
+            
             Spacer()
         }
         .navigationTitle("Profile")
@@ -113,7 +113,7 @@ struct ProfileView: View {
     private func fetchUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
-
+        
         userRef.getDocument { document, error in
             if let document = document, document.exists {
                 if let name = document.get("name") as? String {
@@ -139,12 +139,12 @@ struct ProfileView: View {
             }
         }
     }
-
+    
     // Firestoreにユーザー情報を更新（画像と名前のみ）
     private func updateUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
-
+        
         userRef.setData(["name": username], merge: true) { error in
             if let error = error {
                 print("Error updating profile: \(error)")
@@ -154,20 +154,20 @@ struct ProfileView: View {
             }
         }
     }
-
+    
     // Firebase Storageに画像をアップロード
     private func uploadImageToFirebase(image: UIImage) {
         guard let user = Auth.auth().currentUser else { return }
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
-
+        
         let storageRef = storage.reference().child("profile_images/\(user.uid).jpg")
-
+        
         storageRef.putData(imageData, metadata: nil) { _, error in
             if let error = error {
                 print("Error uploading image: \(error)")
                 return
             }
-
+            
             storageRef.downloadURL { url, error in
                 if let url = url {
                     self.imageURL = url.absoluteString
@@ -176,7 +176,7 @@ struct ProfileView: View {
             }
         }
     }
-
+    
     // Firestoreに保存された画像URLから画像を読み込む
     private func loadImage(from urlString: String) {
         guard let url = URL(string: urlString) else { return }
@@ -188,7 +188,7 @@ struct ProfileView: View {
             }
         }
     }
-
+    
     // Spotify検索画面を開く
     private func openSpotifySearch() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -196,7 +196,7 @@ struct ProfileView: View {
               let rootVC = window.rootViewController else { return }
         
         let spotifyVC = SpotifySearchViewController()
-
+        
         // もし onSongSelected が存在するなら、クロージャを設定
         if let spotifyVC = spotifyVC as? NSObject {
             let selector = Selector(("setOnSongSelected:"))
@@ -204,7 +204,7 @@ struct ProfileView: View {
                 spotifyVC.setValue({ (selectedSong: String, selectedArtist: String) in
                     self.favoriteSong = selectedSong
                     self.artistName = selectedArtist
-
+                    
                     // Firestoreに即時更新
                     guard let user = Auth.auth().currentUser else { return }
                     let userRef = self.db.collection("users").document(user.uid)
@@ -217,11 +217,11 @@ struct ProfileView: View {
                 }, forKey: "onSongSelected")
             }
         }
-
+        
         rootVC.present(spotifyVC, animated: true)
     }
-
-    // Spotifyで選んだ曲を Firestore に即座に保存
+    
+    // Spotifyで選んだ曲を Firestore に即座に保存（完全上書き）
     private func saveFavoriteSong(songName: String, artists: [String]) {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
@@ -229,15 +229,18 @@ struct ProfileView: View {
         let newSong: [String: Any] = [
             "name": songName,
             "artists": artists,
-            "savedAt": Timestamp(date: Date())
+            "savedAt": Timestamp(date: Date()) // 更新時刻を保存
         ]
 
-        userRef.setData(["favorite_song": [newSong]], merge: true) { error in
+        // ✅ `merge: true` を **使わず** 完全に上書き
+        userRef.updateData(["favorite_song": newSong]) { error in
             if let error = error {
                 print("Error updating favorite song: \(error)")
             } else {
-                self.favoriteSong = songName
-                self.artistName = artists.joined(separator: ", ")
+                DispatchQueue.main.async {
+                    self.favoriteSong = songName
+                    self.artistName = artists.joined(separator: ", ")
+                }
             }
         }
     }
