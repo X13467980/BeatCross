@@ -191,30 +191,36 @@ struct ProfileView: View {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
               let window = windowScene.windows.first,
               let rootVC = window.rootViewController else { return }
-        
+
         let spotifyVC = SpotifySearchViewController()
-        
-        // もし onSongSelected が存在するなら、クロージャを設定
-        if let spotifyVC = spotifyVC as? NSObject {
-            let selector = Selector(("setOnSongSelected:"))
-            if spotifyVC.responds(to: selector) {
-                spotifyVC.setValue({ (selectedSong: String, selectedArtist: String) in
-                    self.favoriteSong = selectedSong
-                    self.artistName = selectedArtist
-                    
-                    // Firestoreに即時更新
-                    guard let user = Auth.auth().currentUser else { return }
-                    let userRef = self.db.collection("users").document(user.uid)
-                    let newSong: [String: Any] = [
-                        "name": selectedSong,
-                        "artists": [selectedArtist],
-                        "savedAt": Timestamp(date: Date())
-                    ]
-                    userRef.setData(["favorite_song": newSong], merge: true)
-                }, forKey: "onSongSelected")
+        spotifyVC.modalPresentationStyle = .fullScreen // ✅ フルスクリーンで開く
+
+        // ✅ `onSongSelected` クロージャを設定
+        spotifyVC.onSongSelected = { selectedSong, selectedArtist in
+            DispatchQueue.main.async {
+                self.favoriteSong = selectedSong
+                self.artistName = selectedArtist
+                
+                // Firestoreに即時更新
+                guard let user = Auth.auth().currentUser else { return }
+                let userRef = self.db.collection("users").document(user.uid)
+                let newSong: [String: Any] = [
+                    "name": selectedSong,
+                    "artists": [selectedArtist],
+                    "savedAt": Timestamp(date: Date())
+                ]
+                userRef.setData(["favorite_song": newSong], merge: true) { error in
+                    if error == nil {
+                        DispatchQueue.main.async {
+                            // ✅ 更新後に ProfileView を再読み込み
+                            self.fetchUserProfile()
+                            spotifyVC.dismiss(animated: true)
+                        }
+                    }
+                }
             }
         }
-        
+
         rootVC.present(spotifyVC, animated: true)
     }
     

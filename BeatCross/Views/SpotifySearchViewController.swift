@@ -104,6 +104,11 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
         }
 
         tableView.deselectRow(at: indexPath, animated: true)
+        // ✅ onSongSelected クロージャを呼び出して ProfileView にデータを送る
+            onSongSelected?(selectedTrack.name, selectedTrack.artists.map { $0.name }.joined(separator: ", "))
+
+            // ✅ 画面を閉じる
+            dismiss(animated: true, completion: nil)
     }
 
     // MARK: - HomeView への遷移処理
