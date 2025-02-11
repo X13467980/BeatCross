@@ -193,7 +193,8 @@ struct ProfileView: View {
               let rootVC = window.rootViewController else { return }
 
         let spotifyVC = SpotifySearchViewController()
-        
+        spotifyVC.modalPresentationStyle = .fullScreen // ✅ フルスクリーンで開く
+
         // ✅ `onSongSelected` クロージャを設定
         spotifyVC.onSongSelected = { selectedSong, selectedArtist in
             DispatchQueue.main.async {
@@ -208,13 +209,18 @@ struct ProfileView: View {
                     "artists": [selectedArtist],
                     "savedAt": Timestamp(date: Date())
                 ]
-                userRef.setData(["favorite_song": newSong], merge: true)
+                userRef.setData(["favorite_song": newSong], merge: true) { error in
+                    if error == nil {
+                        DispatchQueue.main.async {
+                            // ✅ 更新後に ProfileView を再読み込み
+                            self.fetchUserProfile()
+                            spotifyVC.dismiss(animated: true)
+                        }
+                    }
+                }
             }
-            
-            spotifyVC.dismiss(animated: true)
         }
 
-        // ✅ モーダルで表示
         rootVC.present(spotifyVC, animated: true)
     }
     
