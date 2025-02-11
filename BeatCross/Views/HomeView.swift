@@ -16,9 +16,7 @@ struct HomeView: View {
     
     // ローカルのモックデータ
     let music = [
-        Song(image:"jaketTest",title:"新しい曲を探してみよう",artist:""),
-        //Song(image:"shounanokaze",title:"睡蓮花",artist:"湘南乃風"),
-        //Song(image:"arashi",title:"love so sweet",artist:"嵐"),
+        Song(image:"jaketTest", title:"新しい曲を探してみよう", artist:""),
     ]
     
     var body: some View {
@@ -29,7 +27,8 @@ struct HomeView: View {
                         .resizable()
                         .ignoresSafeArea()
                         .scaledToFill()
-                    ForEach(0..<combinedSongs.count, id: \ .self) { index in
+                    
+                    ForEach(0..<combinedSongs.count, id: \.self) { index in
                         VStack {
                             Text(combinedSongs[index].title)
                                 .fontWeight(.heavy)
@@ -78,10 +77,9 @@ struct HomeView: View {
                             }
                         }
                 )
-               
                 
                 ScrollView {
-                    ForEach(encounteredSongs, id: \ .song_id) { song in
+                    ForEach(encounteredSongs, id: \.song_id) { song in
                         HStack {
                             AsyncImage(url: URL(string: song.image_url)) { image in
                                 image.resizable()
@@ -128,6 +126,16 @@ struct HomeView: View {
             }
             .navigationTitle("Home")
             .navigationBarBackButtonHidden(true)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink(destination: ProfileView()) {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .frame(width: 30, height: 30)
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
         }
         .onAppear {
             favSongManager.fetchEncounteredUsersFavSongs { fetchedSongs in
@@ -141,7 +149,7 @@ struct HomeView: View {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
             let searchVC = SpotifySearchViewController()
-            searchVC.modalPresentationStyle = .fullScreen // フルスクリーン表示を適用
+            searchVC.modalPresentationStyle = .fullScreen
             rootVC.present(searchVC, animated: true)
         }
     }
