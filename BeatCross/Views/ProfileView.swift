@@ -79,16 +79,21 @@ struct ProfileView: View {
         }
     }
     
-    // Firebase Firestoreからユーザー情報を取得
+    // Firestoreからユーザー情報を取得
     private func fetchUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
         
         userRef.getDocument { document, error in
             if let document = document, document.exists {
-                if let nickname = document.get("nickname") as? String {
-                    self.username = nickname
+                // `name` フィールドを取得
+                if let name = document.get("name") as? String {
+                    self.username = name
+                } else {
+                    self.username = "ユーザー名"
                 }
+                
+                // `imageURL` フィールドを取得
                 if let url = document.get("imageURL") as? String {
                     self.imageURL = url
                     loadImage(from: url)
@@ -102,7 +107,7 @@ struct ProfileView: View {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
         
-        userRef.setData(["nickname": username, "imageURL": imageURL ?? ""], merge: true) { error in
+        userRef.setData(["name": username, "imageURL": imageURL ?? ""], merge: true) { error in
             if let error = error {
                 print("Error updating profile: \(error)")
             } else {
