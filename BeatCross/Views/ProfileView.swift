@@ -13,7 +13,7 @@ struct ProfileView: View {
     @State private var artistName: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
-    
+
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
 
@@ -124,11 +124,8 @@ struct ProfileView: View {
                     loadImage(from: url)
                 }
                 if let songs = document.get("favorite_song") as? [[String: Any]], !songs.isEmpty {
-                    // 最新の曲（最後に追加された曲）を取得
                     if let latestSong = songs.last {
                         self.favoriteSong = latestSong["name"] as? String ?? "お気に入り曲なし"
-                        
-                        // アーティストのリストを取得して文字列に変換
                         if let artists = latestSong["artists"] as? [String], !artists.isEmpty {
                             self.artistName = artists.joined(separator: ", ")
                         } else {
@@ -143,18 +140,12 @@ struct ProfileView: View {
         }
     }
 
-    // Firestoreにユーザー情報を更新
+    // Firestoreにユーザー情報を更新（画像と名前のみ）
     private func updateUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
 
-        let newSong: [String: Any] = [
-            "name": favoriteSong,
-            "artists": artistName.components(separatedBy: ", "),
-            "savedAt": Timestamp(date: Date())
-        ]
-
-        userRef.setData(["favorite_song": [newSong]], merge: true) { error in
+        userRef.setData(["name": username], merge: true) { error in
             if let error = error {
                 print("Error updating profile: \(error)")
             } else {
@@ -205,7 +196,50 @@ struct ProfileView: View {
               let rootVC = window.rootViewController else { return }
         
         let spotifyVC = SpotifySearchViewController()
+
+        // もし onSongSelected が存在するなら、クロージャを設定
+        if let spotifyVC = spotifyVC as? NSObject {
+            let selector = Selector(("setOnSongSelected:"))
+            if spotifyVC.responds(to: selector) {
+                spotifyVC.setValue({ (selectedSong: String, selectedArtist: String) in
+                    self.favoriteSong = selectedSong
+                    self.artistName = selectedArtist
+
+                    // Firestoreに即時更新
+                    guard let user = Auth.auth().currentUser else { return }
+                    let userRef = self.db.collection("users").document(user.uid)
+                    let newSong: [String: Any] = [
+                        "name": selectedSong,
+                        "artists": [selectedArtist],
+                        "savedAt": Timestamp(date: Date())
+                    ]
+                    userRef.setData(["favorite_song": newSong], merge: true)
+                }, forKey: "onSongSelected")
+            }
+        }
+
         rootVC.present(spotifyVC, animated: true)
+    }
+
+    // Spotifyで選んだ曲を Firestore に即座に保存
+    private func saveFavoriteSong(songName: String, artists: [String]) {
+        guard let user = Auth.auth().currentUser else { return }
+        let userRef = db.collection("users").document(user.uid)
+
+        let newSong: [String: Any] = [
+            "name": songName,
+            "artists": artists,
+            "savedAt": Timestamp(date: Date())
+        ]
+
+        userRef.setData(["favorite_song": [newSong]], merge: true) { error in
+            if let error = error {
+                print("Error updating favorite song: \(error)")
+            } else {
+                self.favoriteSong = songName
+                self.artistName = artists.joined(separator: ", ")
+            }
+        }
     }
 }
 
