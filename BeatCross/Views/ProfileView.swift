@@ -109,11 +109,11 @@ struct ProfileView: View {
         }
     }
     
-    // Firestoreからユーザー情報を取得
+    // Firestoreからユーザー情報を取得（favorite_song をオブジェクトとして取得）
     private func fetchUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
-        
+
         userRef.getDocument { document, error in
             if let document = document, document.exists {
                 if let name = document.get("name") as? String {
@@ -123,19 +123,16 @@ struct ProfileView: View {
                     self.imageURL = url
                     loadImage(from: url)
                 }
-                if let songs = document.get("favorite_song") as? [[String: Any]], !songs.isEmpty {
-                    if let latestSong = songs.last {
-                        self.favoriteSong = latestSong["name"] as? String ?? "お気に入り曲なし"
-                        if let artists = latestSong["artists"] as? [String], !artists.isEmpty {
-                            self.artistName = artists.joined(separator: ", ")
-                        } else {
-                            self.artistName = ""
-                        }
-                    }
+                if let songData = document.get("favorite_song") as? [String: Any] {
+                    // ✅ `favorite_song` をオブジェクトとして取得
+                    self.favoriteSong = songData["name"] as? String ?? "お気に入り曲なし"
+                    self.artistName = (songData["artists"] as? [String])?.joined(separator: ", ") ?? ""
                 } else {
                     self.favoriteSong = "お気に入り曲なし"
                     self.artistName = ""
                 }
+            } else {
+                print("❌ Firestore からデータを取得できませんでした")
             }
         }
     }
