@@ -20,7 +20,7 @@ struct ProfileView: View {
     var body: some View {
         VStack {
             Spacer()
-            
+
             // プロフィール画像
             PhotosPicker(selection: $selectedItem, matching: .images) {
                 if let image = profileImage {
@@ -123,9 +123,19 @@ struct ProfileView: View {
                     self.imageURL = url
                     loadImage(from: url)
                 }
-                if let song = document.get("favorite_song") as? [String: String] {
-                    self.favoriteSong = song["title"] ?? "お気に入り曲なし"
-                    self.artistName = song["artist"] ?? ""
+                if let songs = document.get("favorite_song") as? [[String: Any]], !songs.isEmpty {
+                    // 最新の曲を取得 (最後の要素)
+                    if let latestSong = songs.last {
+                        self.favoriteSong = latestSong["name"] as? String ?? "お気に入り曲なし"
+                        if let artists = latestSong["artists"] as? [String], !artists.isEmpty {
+                            self.artistName = artists.joined(separator: ", ")
+                        } else {
+                            self.artistName = ""
+                        }
+                    }
+                } else {
+                    self.favoriteSong = "お気に入り曲なし"
+                    self.artistName = ""
                 }
             }
         }
@@ -136,12 +146,15 @@ struct ProfileView: View {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
 
-        let favoriteSongData: [String: String] = [
-            "title": favoriteSong,
-            "artist": artistName
+        let newSong: [String: Any] = [
+            "name": favoriteSong,
+            "artists": artistName.components(separatedBy: ", "),
+            "savedAt": Timestamp(date: Date())  // Firestoreのタイムスタンプを使う
         ]
 
-        userRef.setData(["name": username, "imageURL": imageURL ?? "", "favorite_song": favoriteSongData], merge: true) { error in
+        userRef.updateData([
+            "favorite_song": FieldValue.arrayUnion([newSong])
+        ]) { error in
             if let error = error {
                 print("Error updating profile: \(error)")
             } else {
@@ -185,15 +198,15 @@ struct ProfileView: View {
         }
     }
 
-    // Spotify検索画面を開く（UIKit）
-    private func openSpotifySearch() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first,
-              let rootVC = window.rootViewController else { return }
-        
-        let spotifyVC = SpotifySearchViewController()
-        rootVC.present(spotifyVC, animated: true)
-    }
+    // Spotify検索画面を開く
+        private func openSpotifySearch() {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let window = windowScene.windows.first,
+                  let rootVC = window.rootViewController else { return }
+            
+            let spotifyVC = SpotifySearchViewController()
+            rootVC.present(spotifyVC, animated: true)
+        }
 }
 
 #Preview {
