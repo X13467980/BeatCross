@@ -9,12 +9,14 @@ struct ProfileView: View {
     @State private var selectedItem: PhotosPickerItem? = nil
     @State private var profileImage: UIImage? = UIImage(systemName: "person.circle.fill")
     @State private var imageURL: String? = nil
+    @State private var favoriteSong: String = "お気に入り曲なし"
+    @State private var artistName: String = ""
     @State private var showAlert = false
     @State private var alertMessage = ""
     
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
-    
+
     var body: some View {
         VStack {
             Spacer()
@@ -48,14 +50,42 @@ struct ProfileView: View {
                     }
                 }
             }
-            
+
             // 名前の編集
             TextField("名前を入力", text: $username)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .frame(width: 200)
                 .multilineTextAlignment(.center)
                 .padding(.bottom, 20)
-            
+
+            // お気に入り曲
+            VStack {
+                Text("お気に入り曲")
+                    .font(.headline)
+                if artistName.isEmpty || favoriteSong == "お気に入り曲なし" {
+                    Text("お気に入り曲なし")
+                        .foregroundColor(.gray)
+                } else {
+                    Text("\(artistName) - \(favoriteSong)")
+                        .font(.body)
+                        .padding(.bottom, 5)
+                }
+            }
+            .padding(.bottom, 10)
+
+            // お気に入り曲変更ボタン（UIKit 画面を開く）
+            Button(action: {
+                openSpotifySearch()
+            }) {
+                Text("お気に入り曲を変更")
+                    .bold()
+                    .frame(width: 180, height: 40)
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+            }
+            .padding(.bottom, 20)
+
             // 保存ボタン
             Button(action: {
                 updateUserProfile()
@@ -70,7 +100,7 @@ struct ProfileView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("保存完了"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
-            
+
             Spacer()
         }
         .navigationTitle("Profile")
@@ -83,31 +113,35 @@ struct ProfileView: View {
     private func fetchUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
-        
+
         userRef.getDocument { document, error in
             if let document = document, document.exists {
-                // `name` フィールドを取得
                 if let name = document.get("name") as? String {
                     self.username = name
-                } else {
-                    self.username = "ユーザー名"
                 }
-                
-                // `imageURL` フィールドを取得
                 if let url = document.get("imageURL") as? String {
                     self.imageURL = url
                     loadImage(from: url)
                 }
+                if let song = document.get("favorite_song") as? [String: String] {
+                    self.favoriteSong = song["title"] ?? "お気に入り曲なし"
+                    self.artistName = song["artist"] ?? ""
+                }
             }
         }
     }
-    
+
     // Firestoreにユーザー情報を更新
     private func updateUserProfile() {
         guard let user = Auth.auth().currentUser else { return }
         let userRef = db.collection("users").document(user.uid)
-        
-        userRef.setData(["name": username, "imageURL": imageURL ?? ""], merge: true) { error in
+
+        let favoriteSongData: [String: String] = [
+            "title": favoriteSong,
+            "artist": artistName
+        ]
+
+        userRef.setData(["name": username, "imageURL": imageURL ?? "", "favorite_song": favoriteSongData], merge: true) { error in
             if let error = error {
                 print("Error updating profile: \(error)")
             } else {
@@ -116,20 +150,20 @@ struct ProfileView: View {
             }
         }
     }
-    
+
     // Firebase Storageに画像をアップロード
     private func uploadImageToFirebase(image: UIImage) {
         guard let user = Auth.auth().currentUser else { return }
         guard let imageData = image.jpegData(compressionQuality: 0.4) else { return }
-        
+
         let storageRef = storage.reference().child("profile_images/\(user.uid).jpg")
-        
+
         storageRef.putData(imageData, metadata: nil) { _, error in
             if let error = error {
                 print("Error uploading image: \(error)")
                 return
             }
-            
+
             storageRef.downloadURL { url, error in
                 if let url = url {
                     self.imageURL = url.absoluteString
@@ -138,7 +172,7 @@ struct ProfileView: View {
             }
         }
     }
-    
+
     // Firestoreに保存された画像URLから画像を読み込む
     private func loadImage(from urlString: String) {
         guard let url = URL(string: urlString) else { return }
@@ -149,6 +183,16 @@ struct ProfileView: View {
                 }
             }
         }
+    }
+
+    // Spotify検索画面を開く（UIKit）
+    private func openSpotifySearch() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let rootVC = window.rootViewController else { return }
+        
+        let spotifyVC = SpotifySearchViewController()
+        rootVC.present(spotifyVC, animated: true)
     }
 }
 
