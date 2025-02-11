@@ -80,7 +80,7 @@ struct ProfileView: View {
                 Text("お気に入り曲を変更")
                     .bold()
                     .frame(width: 180, height: 40)
-                    .background(Color.green)
+                    .background(Color.black)
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
