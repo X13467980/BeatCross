@@ -11,6 +11,8 @@ target 'BeatCross' do
   pod 'FirebaseFirestore'
   pod 'Alamofire'
   pod 'SDWebImage'
+  pod 'FirebaseCore'
+  pod 'FirebaseStorage'
 
   target 'BeatCrossTests' do
     inherit! :search_paths

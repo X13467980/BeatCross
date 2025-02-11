@@ -6,6 +6,7 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
     private let spotifyManager = SpotifySearchManager()
     private let databaseControl = DatabaseControl()
     private var searchResults: [SpotifyTrack] = []
+    var onSongSelected: ((String, String) -> Void)?
 
     // MARK: - Lifecycle
 
@@ -128,4 +129,9 @@ class SpotifySearchViewController: UIViewController, UITableViewDataSource, UITa
         })
         present(alert, animated: true)
     }
+    
+    func selectSong(songName: String, artistName: String) {
+            onSongSelected?(songName, artistName) // ✅ クロージャを呼び出す
+            dismiss(animated: true, completion: nil) // ✅ 画面を閉じる
+        }
 }

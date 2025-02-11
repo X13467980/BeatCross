@@ -41,7 +41,7 @@ struct SpotifyTrack: Decodable {
 class DatabaseControl {
     private let db = Firestore.firestore()
     
-    /// ユーザーのお気に入り & "songs" コレクションに保存
+    /// ユーザーのお気に入り曲を Firestore に保存（配列ではなくオブジェクトとして上書き）
     /// - Parameters:
     ///   - track: Spotifyのトラック情報
     ///   - completion: 成功 / 失敗をBoolで返却
@@ -61,7 +61,7 @@ class DatabaseControl {
         // 取得したアルバムアートの先頭URLを使用
         let imageUrl = track.album.images?.first?.url ?? ""
         
-        // Firestoreに保存したい曲情報
+        // Firestoreに保存する曲情報（配列ではなくオブジェクトとして格納）
         let songData: [String: Any] = [
             "song_id": track.id,
             "name": track.name,
@@ -75,13 +75,10 @@ class DatabaseControl {
         
         let batch = db.batch()
         
-        // 1. ユーザードキュメントの "favorite_song" フィールド（配列）に曲情報を追加
-        //    ドキュメントが無い場合も作成したいので setData(..., merge: true) を使う
-        batch.setData(["favorite_song": FieldValue.arrayUnion([songData])],
-                      forDocument: userDocRef,
-                      merge: true)
+        // ✅ "favorite_song" をオブジェクトとして上書き
+        batch.setData(["favorite_song": songData], forDocument: userDocRef, merge: true)
         
-        // 2. "songs" コレクションに曲情報を保存 (なければ新規作成、あればデータをマージ)
+        // ✅ "songs" コレクションに曲情報を保存 (なければ新規作成、あればデータをマージ)
         batch.setData(songData, forDocument: songDocRef, merge: true)
         
         // 3. バッチのコミット
