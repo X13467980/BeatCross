@@ -16,42 +16,56 @@ struct LoginView: View {
 
     var body: some View {
         NavigationStack {
-            VStack(spacing: 20) {
-                Text("Login")
-                    .font(.title)
-                    .fontWeight(.bold)
+            ZStack {
+                Image("backGroundImage")
+                    .resizable()
+                    .ignoresSafeArea()
+                    .scaledToFill()
                 
-                TextField("Email", text: $email)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .autocapitalization(.none)
-                    .keyboardType(.emailAddress)
-                
-                SecureField("Password", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .font(.caption)
-                }
-                
-                Button(action: {
-                    loginUser()
-                }) {
+                VStack(spacing: 20) {
                     Text("Login")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.green)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                    
+                    TextField("Email", text: $email)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                    
+                    SecureField("Password", text: $password)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                    
+                    if let errorMessage = errorMessage {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                    
+                    Button(action: {
+                        loginUser()
+                    }) {
+                        Text("Login")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.mainDarkBlue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .clipShape(RoundedRectangle(cornerRadius: 10)) // 角丸の適用
+                            .overlay( // ボーダーの適用
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.white, lineWidth: 1.5)
+                            )
+                    }
+                }
+                .padding()
+//                .navigationTitle("Login")
+                // navigationDestinationで遷移先を定義
+                .navigationDestination(isPresented: $navigateToHome) {
+                    HomeView()
                 }
             }
-            .padding()
-            .navigationTitle("Login")
-            // navigationDestinationで遷移先を定義
-            .navigationDestination(isPresented: $navigateToHome) {
-                HomeView()
-            }
+           
         }
     }
 

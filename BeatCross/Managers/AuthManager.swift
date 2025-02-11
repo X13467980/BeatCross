@@ -33,4 +33,15 @@ class AuthManager {
             }
         }
     }
+    
+    func getUserId() -> String {
+        if let user = Auth.auth().currentUser {
+            let uid = user.uid
+            print("User ID: \(uid)")
+            return uid
+        } else {
+            print("No user is logged in.")
+            return "error"
+        }
+    }
 }

@@ -1,31 +1,98 @@
 import SwiftUI
 
+struct Song: Identifiable, Decodable {
+    let id = UUID()
+    let image: String // 画像のURLまたはアセット名
+    let title: String
+    let artist: String
+}
+
 struct HomeView: View {
-    // Firestore から取得した曲データを格納する変数
+    @State private var currentIndex = 0
     @State private var encounteredSongs: [EncounteredUserFavSong] = []
-    
-    // Firebase からデータを取得するマネージャ
+    @GestureState private var dragOffset: CGFloat = 0
     private let favSongManager = GetFavSongManager()
+    @StateObject var cBTVM = CBTthVerificationViewModel()
+    
+    // ローカルのモックデータ
+    let music = [
+        Song(image:"jaketTest",title:"新しい曲を探してみよう",artist:""),
+        //Song(image:"shounanokaze",title:"睡蓮花",artist:"湘南乃風"),
+        //Song(image:"arashi",title:"love so sweet",artist:"嵐"),
+    ]
     
     var body: some View {
         NavigationStack {
-            VStack(alignment: .leading, spacing: 20) {
-                Text("Received Songs")
-                    .font(.title)
-                    .fontWeight(.bold)
-                    .padding(.top)
-
-                // ここでは encounteredSongs をそのまま表示する例
+            VStack {
+                ZStack {
+                    Image("backGroundImage")
+                        .resizable()
+                        .ignoresSafeArea()
+                        .scaledToFill()
+                    ForEach(0..<combinedSongs.count, id: \ .self) { index in
+                        VStack {
+                            Text(combinedSongs[index].title)
+                                .fontWeight(.heavy)
+                                .foregroundColor(Color.white)
+                                .font(.system(size: 20))
+                            
+                            Text(combinedSongs[index].artist)
+                                .fontWeight(.heavy)
+                                .foregroundColor(Color.white)
+                                .font(.system(size: 14))
+                            
+                            if let url = URL(string: combinedSongs[index].image), combinedSongs[index].image.contains("http") {
+                                AsyncImage(url: url) { image in
+                                    image.resizable()
+                                } placeholder: {
+                                    ProgressView()
+                                }
+                                .frame(width: 120.0, height: 120.0)
+                                .cornerRadius(60)
+                            } else {
+                                Image(combinedSongs[index].image)
+                                    .resizable()
+                                    .frame(width: 120.0, height: 120.0)
+                                    .cornerRadius(60)
+                            }
+                        }
+                        .frame(width: 300, height: 200)
+                        .cornerRadius(25)
+                        .opacity(currentIndex == index ? 1.0 : 0.5)
+                        .scaleEffect(currentIndex == index ? 1.2 : 0.8)
+                        .offset(x: CGFloat(index - currentIndex) * 200 + dragOffset, y: -120)
+                    }
+                }
+                .gesture(
+                    DragGesture()
+                        .onEnded { value in
+                            let threshold: CGFloat = 50
+                            if value.translation.width > threshold {
+                                withAnimation {
+                                    currentIndex = max(0, currentIndex - 1)
+                                }
+                            } else if value.translation.width < -threshold {
+                                withAnimation {
+                                    currentIndex = min(combinedSongs.count - 1, currentIndex + 1)
+                                }
+                            }
+                        }
+                )
+               
+                
                 ScrollView {
-                    ForEach(encounteredSongs, id: \.song_id) { song in
+                    ForEach(encounteredSongs, id: \ .song_id) { song in
                         HStack {
-                            // 画像URLを使う場合は、ライブラリ等でURL画像を表示
-                            // ここではプレースホルダーとしてイメージを使っています
-                            Image(systemName: "photo")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 60, height: 60)
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                            AsyncImage(url: URL(string: song.image_url)) { image in
+                                image.resizable()
+                            } placeholder: {
+                                Image(systemName: "photo")
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            }
+                            .frame(width: 60, height: 60)
                             
                             VStack(alignment: .leading) {
                                 Text(song.name)
@@ -39,10 +106,9 @@ struct HomeView: View {
                         .padding(.vertical, 8)
                     }
                 }
-
+                
                 Spacer()
-
-                // 🔍 小さい検索ボタンを画面右下に配置
+                
                 HStack {
                     Spacer()
                     Button(action: {
@@ -60,49 +126,29 @@ struct HomeView: View {
                     .padding(.trailing, 20)
                 }
             }
-            .padding()
             .navigationTitle("Home")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: {
-                        openSpotifySearch()
-                    }) {
-                        Image(systemName: "magnifyingglass")
-                            .font(.title2)
-                            .foregroundColor(.blue)
-                    }
-                }
-            }
+            .navigationBarBackButtonHidden(true)
         }
-        // HomeView が表示されたときに自動で呼び出す
         .onAppear {
             favSongManager.fetchEncounteredUsersFavSongs { fetchedSongs in
-                // 1. 受け取った曲データを State に格納
                 encounteredSongs = fetchedSongs
-                
-                // 2. ログに出してみる
-                print("----- [HomeView] fetchEncounteredUsersFavSongs 結果 -----")
-                for song in fetchedSongs {
-                    print("""
-                    \nユーザーID: \(song.userId)
-                    曲ID: \(song.song_id)
-                    タイトル: \(song.name)
-                    アルバム: \(song.album)
-                    アーティスト: \(song.artists.joined(separator: ", "))
-                    保存日時: \(song.savedAt.dateValue())
-                    画像URL: \(song.image_url)
-                    """)
-                }
+                print("Fetched \(fetchedSongs.count) songs")
             }
         }
     }
     
-    // SwiftUI から UIKit の `SpotifySearchViewController` を開く
     private func openSpotifySearch() {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
            let rootVC = windowScene.windows.first?.rootViewController {
             let searchVC = SpotifySearchViewController()
+            searchVC.modalPresentationStyle = .fullScreen // フルスクリーン表示を適用
             rootVC.present(searchVC, animated: true)
+        }
+    }
+    
+    private var combinedSongs: [Song] {
+        music + encounteredSongs.map { song in
+            Song(image: song.image_url, title: song.name, artist: song.artists.joined(separator: ", "))
         }
     }
 }

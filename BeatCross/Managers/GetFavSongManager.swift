@@ -5,7 +5,7 @@
 //  Created by (あなたの名前) on 2025/02/08.
 //
 
-import FirebaseFirestore
+import FirebaseFirestore 
 import FirebaseAuth
 
 /// encounter_uid に含まれる他のユーザーが登録したお気に入り曲のデータ
